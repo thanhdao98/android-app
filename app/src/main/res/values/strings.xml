@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">My Appmtp</string>
+    <string name="todo">TODO</string>
+    <string name="todo_iropen">TODO iropen</string>
 </resources>

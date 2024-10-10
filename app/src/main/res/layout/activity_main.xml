@@ -1,4 +1,5 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -6,105 +7,119 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        android:text="背景画像選択"
-        android:textColor="#F0B913"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+    <!-- Top menu containing title and action buttons -->
+    <LinearLayout
+        android:id="@+id/topMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <ImageButton
-        android:id="@+id/imageButtonUndo"
-        android:layout_width="72dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="Undo"
-        android:src="@drawable/undo3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButtonRedo"
-        app:layout_constraintStart_toEndOf="@id/textView"
-        tools:layout_editor_absoluteX="215dp" />
+        <!-- Title TextView for background image selection -->
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:text="背景画像選択"
+            android:textColor="#F0B913"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center" />
 
-    <ImageButton
-        android:id="@+id/imageButtonRedo"
-        android:layout_width="67dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="Redo"
-        android:src="@drawable/redo2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imageButtonUndo"
-        tools:layout_editor_absoluteX="287dp" />
 
-    <Button
-        android:id="@+id/buttonComplete"
-        android:layout_width="86dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="Complete"
-        android:text="完了"
-        android:textColor="#F0B913"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <!-- Undo button -->
+        <ImageButton
+            android:id="@+id/imageButtonUndo"
+            android:layout_width="71dp"
+            android:layout_height="45dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Undo"
+            android:src="@drawable/undo3" />
 
-    <com.example.myappmtp.CustomDrawingView
+        <!-- Redo button -->
+        <ImageButton
+            android:id="@+id/imageButtonRedo"
+            android:layout_width="68dp"
+            android:layout_height="46dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Redo"
+            android:src="@drawable/redo2" />
+
+        <!-- Complete button -->
+        <Button
+            android:id="@+id/buttonComplete"
+            android:layout_width="86dp"
+            android:layout_height="43dp"
+            android:background="@android:color/transparent"
+            android:text="完了"
+            android:textColor="#F0B913"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Drawing view where the user can draw or paint -->
+    <com.example.myappmtp.DrawingView
         android:id="@+id/drawingView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintBottom_toTopOf="@id/bottomLayout"
+        android:background="#FFFFFD"
+        app:layout_constraintBottom_toTopOf="@id/bottomMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/topMenu"
+        app:layout_constraintVertical_bias="0.0" />
 
+    <!-- Bottom menu containing drawing tools -->
     <LinearLayout
-        android:id="@+id/bottomLayout"
+        android:id="@+id/bottomMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FAF7F4"
         android:orientation="horizontal"
         android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Pencil tool button -->
         <ImageButton
             android:id="@+id/imageButtonPencil"
             android:layout_width="79dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/pencil" />
+            app:srcCompat="@drawable/pencil"
+            android:contentDescription="TODO" />
 
+        <!-- Color pen tool button -->
         <ImageButton
             android:id="@+id/imageButtonColorPen"
             android:layout_width="92dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/iropen" />
+            app:srcCompat="@drawable/iropen"
+            android:contentDescription="@string/todo_iropen" />
 
+        <!-- Eraser tool button -->
         <ImageButton
             android:id="@+id/imageButtonEraser"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/eraser" />
+            app:srcCompat="@drawable/eraser"
+            android:contentDescription="@string/todo" />
 
+        <!-- Plus tool button -->
         <ImageButton
             android:id="@+id/imageButtonPlus"
             android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/plus" />
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
