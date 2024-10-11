@@ -57,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-// Initialize the image picker launcher
+        // Initialize the image picker launcher
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri imageUri = result.getData().getData();
                         if (imageUri != null) {
-                            // Gọi phương thức loadImage để tải hình ảnh
+                            // Call loadImage method to load the image
                             mDrawingView.loadImage(imageUri);
                         }
                     }
@@ -138,8 +138,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawingView.setErase(false); // Set drawing mode
 
         // Start shake animation on the pen icon
-        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        imgPen.startAnimation(shake);
+        startAnimation(imgPen);
     }
 
     /**
@@ -151,8 +150,15 @@ public class MainActivity extends AppCompatActivity {
         mDrawingView.setErase(true); // Set erase mode
 
         // Start shake animation on the eraser icon
+        startAnimation(imgErase);
+    }
+
+    /**
+     * Starts the shake animation on the given view
+     */
+    private void startAnimation(View view) {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        imgErase.startAnimation(shake);
+        view.startAnimation(shake);
     }
 
     /**
