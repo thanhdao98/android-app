@@ -2,6 +2,8 @@ package com.example.myappmtp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -12,10 +14,13 @@ import android.widget.LinearLayout;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +60,29 @@ public class MainActivity extends AppCompatActivity {
     private void openImageChooser() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE);
+    }
+
+
+    // Nhận kết quả từ thư viện ảnh
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+            Uri imageUri = data.getData();
+            if (imageUri != null) {
+                setImageToDrawingView(imageUri);
+            }
+        }
+    }
+
+    // Thiết lập hình ảnh cho DrawingView
+    private void setImageToDrawingView(Uri imageUri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            mDrawingView.setBackgroundBitmap(bitmap); // Gọi phương thức thiết lập hình nền trong DrawingView
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

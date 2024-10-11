@@ -159,4 +159,16 @@ public class DrawingView extends View {
     public void setEraserSize(float newSize) {
         eraserSize = newSize;
     }
+
+
+    private Bitmap backgroundBitmap; // Bitmap hình nền
+
+    // Phương thức để thiết lập hình nền
+    public void setBackgroundBitmap(Bitmap bitmap) {
+        this.backgroundBitmap = bitmap;
+        invalidate(); // Vẽ lại view để hiển thị hình nền
+    }
+
+
+
 }
