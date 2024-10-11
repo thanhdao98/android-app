@@ -2,16 +2,22 @@ package com.example.myappmtp;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Stack;
 
 public class DrawingView extends View {
@@ -26,6 +32,9 @@ public class DrawingView extends View {
     private static final Stack<Bitmap> undoStack = new Stack<>();
     private static final Stack<Bitmap> redoStack = new Stack<>();
     private boolean erase = false;
+
+    // Bitmap for background image
+    private Bitmap backgroundBitmap;
 
     // Initialization
     public DrawingView(Context context, AttributeSet attrs) {
@@ -66,9 +75,31 @@ public class DrawingView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (backgroundBitmap != null) {
+            int bitmapWidth = backgroundBitmap.getWidth();
+            int bitmapHeight = backgroundBitmap.getHeight();
+            float viewWidth = getWidth();
+            float viewHeight = getHeight();
+
+            // Tính toán tỷ lệ
+            float scale = Math.min(viewWidth / bitmapWidth, viewHeight / bitmapHeight);
+            int newWidth = (int) (bitmapWidth * scale);
+            int newHeight = (int) (bitmapHeight * scale);
+
+            // Tính toán vị trí để căn giữa
+            int left = (int) ((viewWidth - newWidth) / 2);
+            int top = (int) ((viewHeight - newHeight) / 2);
+
+            // Vẽ hình ảnh với kích thước mới
+            canvas.drawBitmap(backgroundBitmap, null, new Rect(left, top, left + newWidth, top + newHeight), null);
+        }
+
+        // Vẽ canvas và path
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
-        canvas.drawPath(drawPath, erase ? erasePaint : drawPaint);  // Use erase paint if erase mode is on
+        canvas.drawPath(drawPath, erase ? erasePaint : drawPaint);
     }
+
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -160,9 +191,6 @@ public class DrawingView extends View {
         eraserSize = newSize;
     }
 
-
-    private Bitmap backgroundBitmap; // Bitmap hình nền
-
     // Phương thức để thiết lập hình nền
     public void setBackgroundBitmap(Bitmap bitmap) {
         this.backgroundBitmap = bitmap;
@@ -170,5 +198,42 @@ public class DrawingView extends View {
     }
 
 
+    // Phương thức để tải hình ảnh từ Uri
+    public void loadImage(Uri imageUri) {
+        try {
+            // Chuyển đổi URI thành Bitmap
+            InputStream inputStream = getContext().getContentResolver().openInputStream(imageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-}
+            // Lấy kích thước của DrawingView
+            int viewWidth = getWidth();
+            int viewHeight = getHeight();
+
+            // Tính tỷ lệ ảnh và tỷ lệ của DrawingView
+            float imageRatio = (float) bitmap.getWidth() / bitmap.getHeight();
+            float viewRatio = (float) viewWidth / viewHeight;
+
+            int newWidth, newHeight;
+
+            // Nếu tỷ lệ ảnh lớn hơn tỷ lệ của DrawingView, sử dụng chiều rộng của DrawingView
+            if (imageRatio > viewRatio) {
+                newWidth = viewWidth;
+                newHeight = Math.round(viewWidth / imageRatio);
+            } else { // Nếu tỷ lệ của DrawingView lớn hơn hoặc bằng tỷ lệ ảnh, sử dụng chiều cao của DrawingView
+                newHeight = viewHeight;
+                newWidth = Math.round(viewHeight * imageRatio);
+            }
+
+            // Thay đổi kích thước ảnh để phù hợp với DrawingView mà không bị méo
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+
+            // Đặt hình nền
+            setBackgroundBitmap(resizedBitmap);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    }
+
+

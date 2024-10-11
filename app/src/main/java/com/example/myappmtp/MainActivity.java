@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -35,15 +37,15 @@ public class MainActivity extends AppCompatActivity {
     private DrawingView mDrawingView;
     private boolean isMenuVisible = true; // Flag to check if menus are visible
 
+    // Image picker launcher
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this); // Enable edge-to-edge layout
         setContentView(R.layout.activity_main); // Set content view
-
-        Button selectImageButton = findViewById(R.id.buttonSelectImage);
-        selectImageButton.setOnClickListener(v -> openImageChooser());
 
         initializeUIComponents(); // Initialize UI components
         setupEventListeners(); // Setup event listeners
@@ -54,32 +56,33 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+// Initialize the image picker launcher
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        if (imageUri != null) {
+                            // Gọi phương thức loadImage để tải hình ảnh
+                            mDrawingView.loadImage(imageUri);
+                        }
+                    }
+                }
+        );
     }
 
-    // Mở thư viện ảnh
+    // Open image chooser
     private void openImageChooser() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_IMAGE);
+        imagePickerLauncher.launch(intent);
     }
 
-
-    // Nhận kết quả từ thư viện ảnh
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
-            Uri imageUri = data.getData();
-            if (imageUri != null) {
-                setImageToDrawingView(imageUri);
-            }
-        }
-    }
-
-    // Thiết lập hình ảnh cho DrawingView
+    // Set image to DrawingView
     private void setImageToDrawingView(Uri imageUri) {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-            mDrawingView.setBackgroundBitmap(bitmap); // Gọi phương thức thiết lập hình nền trong DrawingView
+            mDrawingView.setBackgroundBitmap(bitmap); // Call method to set background in DrawingView
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
         btnComplete = findViewById(R.id.buttonComplete);
         topMenu = findViewById(R.id.topMenu);
         bottomMenu = findViewById(R.id.bottomMenu);
+
+        // Set up the image select button
+        Button selectImageButton = findViewById(R.id.buttonSelectImage);
+        selectImageButton.setOnClickListener(v -> openImageChooser());
     }
 
     /**
@@ -161,6 +168,4 @@ public class MainActivity extends AppCompatActivity {
         }
         isMenuVisible = !isMenuVisible; // Update visibility flag
     }
-
-
 }
