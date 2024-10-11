@@ -13,23 +13,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp"
+        android:padding="8dp"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <!-- Title TextView for background image selection -->
-        <TextView
-            android:id="@+id/textView"
+        <!-- Complete button -->
+        <Button
+            android:id="@+id/buttonSelectImage"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:text="背景画像選択"
             android:textColor="#F0B913"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:gravity="center" />
+            android:textStyle="bold" />
 
 
         <!-- Undo button -->
@@ -53,8 +53,8 @@
         <!-- Complete button -->
         <Button
             android:id="@+id/buttonComplete"
-            android:layout_width="86dp"
-            android:layout_height="43dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:text="完了"
             android:textColor="#F0B913"
@@ -78,47 +78,41 @@
     <!-- Bottom menu containing drawing tools -->
     <LinearLayout
         android:id="@+id/bottomMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="419dp"
+        android:layout_height="82dp"
         android:background="#FAF7F4"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <!-- Pencil tool button -->
-        <ImageButton
-            android:id="@+id/imageButtonPencil"
-            android:layout_width="79dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:srcCompat="@drawable/pencil"
-            android:contentDescription="TODO" />
 
         <!-- Color pen tool button -->
-        <ImageButton
-            android:id="@+id/imageButtonColorPen"
-            android:layout_width="92dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:srcCompat="@drawable/iropen"
-            android:contentDescription="@string/todo_iropen" />
 
         <!-- Eraser tool button -->
         <ImageButton
-            android:id="@+id/imageButtonEraser"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/imageButtonPencil"
+            android:layout_width="134dp"
+            android:layout_height="59dp"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/eraser"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="TODO"
+            app:srcCompat="@drawable/pencil" />
+
+        <ImageButton
+            android:id="@+id/imageButtonEraser"
+            android:layout_width="118dp"
+            android:layout_height="59dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/eraser" />
 
         <!-- Plus tool button -->
         <ImageButton
             android:id="@+id/imageButtonPlus"
-            android:layout_width="105dp"
-            android:layout_height="wrap_content"
+            android:layout_width="132dp"
+            android:layout_height="59dp"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/plus" />
     </LinearLayout>
