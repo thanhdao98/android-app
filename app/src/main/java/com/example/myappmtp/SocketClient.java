@@ -73,6 +73,7 @@ public class SocketClient {
                     }
                 } catch (IOException e) {
                     Log.e(TAG, "Error sending image and number", e);
+
                     disconnect(); // Đóng kết nối khi có lỗi
                 }
             } else {
