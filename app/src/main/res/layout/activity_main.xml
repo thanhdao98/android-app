@@ -8,16 +8,19 @@
     tools:context=".MainActivity">
 
     <!-- Top menu containing title and action buttons -->
+
+    <!-- Drawing view where the user can draw or paint -->
     <LinearLayout
         android:id="@+id/topMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="402dp"
+        android:layout_height="60dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Title TextView for background image selection -->
         <!-- Complete button -->
@@ -32,11 +35,20 @@
             android:textStyle="bold" />
 
 
+        <!--list bangou -->
+        <Spinner
+            android:id="@+id/numberSpinner"
+            android:layout_width="83dp"
+            android:layout_height="40dp"
+            android:background="@drawable/spinner_border"
+            android:spinnerMode="dropdown" />
+
+
         <!-- Undo button -->
         <ImageButton
             android:id="@+id/imageButtonUndo"
-            android:layout_width="71dp"
-            android:layout_height="45dp"
+            android:layout_width="47dp"
+            android:layout_height="42dp"
             android:background="@android:color/transparent"
             android:contentDescription="Undo"
             android:src="@drawable/undo3" />
@@ -44,8 +56,8 @@
         <!-- Redo button -->
         <ImageButton
             android:id="@+id/imageButtonRedo"
-            android:layout_width="68dp"
-            android:layout_height="46dp"
+            android:layout_width="46dp"
+            android:layout_height="44dp"
             android:background="@android:color/transparent"
             android:contentDescription="Redo"
             android:src="@drawable/redo2" />
@@ -53,8 +65,8 @@
         <!-- Complete button -->
         <Button
             android:id="@+id/buttonComplete"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="82dp"
+            android:layout_height="43dp"
             android:background="@android:color/transparent"
             android:text="完了"
             android:textColor="#F0B913"
@@ -62,7 +74,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Drawing view where the user can draw or paint -->
     <com.example.myappmtp.DrawingView
         android:id="@+id/drawingView"
         android:layout_width="0dp"
